@@ -32,8 +32,10 @@ export default {
       //index는 vue에서 관리하고 제공하는 변수
       //console.log('todoItem, index: ' + todoItem, index);
       //선택목록을 로컬스토리지와 뷰 데이터에서 삭제
-      localStorage.removeItem(todoItem);
-      this.todoItems.splice(index, 1);
+      // localStorage.removeItem(todoItem);
+      // this.todoItems.splice(index, 1);
+      //이벤트 전달 방식으로 개선
+      this.$emit('removeTodo', todoItem, index);
     }
   }
 }
