@@ -23,7 +23,8 @@ export default {
       //exception handling
       if (this.newTodoItem !== "") {
         let addedValue = this.newTodoItem && this.newTodoItem.trim();
-        localStorage.setItem(addedValue, addedValue);
+        //localStorage.setItem(addedValue, addedValue);
+        this.$emit('addTodo', addedValue);
         this.clearInput();
       }
     },

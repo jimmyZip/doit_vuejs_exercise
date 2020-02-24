@@ -1,12 +1,7 @@
 <template>
   <section>
     <ul>
-      <!--
-      <li>할일 1</li>
-      <li>할일 2</li>
-      <li>할일 3</li>
-      -->
-      <li v-for="(todoItem, index) in todoItems" class="shadow">
+      <li v-for="(todoItem, index) in propsdata" class="shadow">
         <i class="checkBtn fa fa-check" aria-hidden="true"></i>
         {{ todoItem }}
         <span class="removeBtn" type="button" @click="removeTodo(todoItem, index)">
@@ -19,6 +14,7 @@
 
 <script>
 export default {
+  props: ['propsdata'],
   data() {
     return {
       todoItems: []

@@ -9,7 +9,8 @@ export default {
   methods: {
     clearTodoAll() {
       //로컬스토리지의 목록 지우기
-      localStorage.clear();
+      //localStorage.clear();
+      this.$emit('removeAll');
     }
   }
 }

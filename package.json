@@ -1,8 +1,5 @@
 {
-  "name": "vue-todo",
-  "description": "A Vue.js todo application project",
   "version": "1.0.0",
-  "author": "jimmyZip <34062954+jimmyZip@users.noreply.github.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
