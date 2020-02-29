@@ -46,6 +46,9 @@ export default {
         placeholderValue: ''
     }
   },
+  // mounted() {
+  //   this.sortLocalStorage();
+  // },
   props: ['propsdata'],
   methods: {
     removeTodo(todoItem, index) {
@@ -81,6 +84,19 @@ export default {
       this.selectedIndex = '';
       this.placeholderValue = '';
     }
+    // ,
+    // sortLocalStorage() {
+    //   console.log('localStorageSort 호출');
+    //   let localStorageArr = new Array();
+    //   if (localStorage.length > 0) {
+    //     for (let i=0; i<localStorage.length; i++) {
+    //       localStorageArr[i] = localStorage.key(i)+localStorage.getItem(localStorage.key(i));
+    //     }
+    //   }
+    //   let sortedArr = localStorageArr.sort();
+    //   console.log(sortedArr);
+    //   return sortedArr;
+    // }
   },
   components: {
     Modal : Modal
