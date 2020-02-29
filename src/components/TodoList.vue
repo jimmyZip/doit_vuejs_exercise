@@ -2,7 +2,12 @@
   <section>
     <!-- 목록에 애니메이션 추가 -->
     <transition-group name="list" tag="ul">
-      <li v-for="(todoItem, index) in propsdata" class="shadow" v-bind:key="todoItem">
+      <li
+        v-for="(todoItem, index) in propsdata"
+        class="shadow"
+        v-bind:key="todoItem"
+        @dblclick="popupForEdit(todoItem, index)"
+      >
         <i class="checkBtn fa fa-check" aria-hidden="true"></i>
         {{ todoItem }}
         <span class="removeBtn" type="button" @click="removeTodo(todoItem, index)">
@@ -10,24 +15,38 @@
         </span>
       </li>
     </transition-group>
+    <!-- modal -->
+    <!-- <modal v-if="showModal" @close="showModal = false"> -->
+    <modal v-if="showModal" @close="modalClose">
+      <h3 slot="header">caution</h3>
+      <div slot="body" class="inputBox shadow">
+        <input type="text" v-model="editedItem" :placeholder="placeholderValue" v-on:keypress.enter="editTodo">
+        <span class="addContainer" @click="editTodo">
+          <i class="addBtn fas fa-plus"></i>
+        </span>
+      </div>
+      <span slot="footer" @click="modalClose">
+        todo item 변경사항을 입력하세요.
+        <i class="closeModalBtn fas fa-times" aria-hidden="true"></i>
+      </span>
+    </modal>
   </section>
 </template>
 
 <script>
+import Modal from './common/Modal.vue';
+
 export default {
-  props: ['propsdata'],
   data() {
     return {
-      todoItems: []
+        showModal: false,
+        selectedItem: '',
+        selectedIndex: '',
+        editedItem: '',
+        placeholderValue: ''
     }
   },
-  created() {
-    if (localStorage.length > 0) {
-      for (let i=0; i < localStorage.length; i++) {
-        this.todoItems.push(localStorage.key(i));
-      }
-    }
-  },
+  props: ['propsdata'],
   methods: {
     removeTodo(todoItem, index) {
       //index는 vue에서 관리하고 제공하는 변수
@@ -37,7 +56,34 @@ export default {
       // this.todoItems.splice(index, 1);
       //이벤트 전달 방식으로 개선
       this.$emit('removeTodo', todoItem, index);
+    },
+    popupForEdit(todoItem, index) {
+      this.selectedItem = todoItem;
+      this.selectedIndex = index;
+      this.placeholderValue = this.selectedItem;
+      this.showModal = !this.showModal;
+    },
+    editTodo() {
+      if (this.editedItem !== "") {
+        let editedValue = this.editedItem && this.editedItem.trim();
+        this.$emit('editTodo', this.selectedItem, editedValue, this.selectedIndex);
+        this.modalClose();
+      } else {
+        this.showModal = false;
+      }
+    },
+    modalClose() {
+      this.showModal = false;
+      this.clearValues();
+    },
+    clearValues() {
+      this.selectedItem = '';
+      this.selectedIndex = '';
+      this.placeholderValue = '';
     }
+  },
+  components: {
+    Modal : Modal
   }
 }
 </script>
@@ -75,7 +121,7 @@ export default {
     opacity: 0;
     transform: translateY(30px);
   }
-  
+
   .checkBtn {
     line-height: 45px;
     color: #62acde;
@@ -84,5 +130,31 @@ export default {
   .removeBtn {
     margin-left: auto;
     color: #de4343;
+  }
+
+  /* modal */
+  input:focus {
+    outline: none;
+  }
+  .inputBox {
+    background: white;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 5px;
+  }
+  .inputBox input {
+    border-style: none;
+    font-size: 0.9rem;
+  }
+  .addContainer {
+    float: right;
+    background: linear-gradient(to right, #6478fb, #8763fb);
+    display: inline-block;
+    width: 3rem;
+    border-radius: 0 5px 5px 0;
+  }
+  .addBtn {
+    color: white;
+    vertical-align: middle;
   }
 </style>

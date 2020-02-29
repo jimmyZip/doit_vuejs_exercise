@@ -2,7 +2,7 @@
   <div id="app">
     <TodoHeader></TodoHeader>
     <TodoInput v-on:addTodo="addTodo"></TodoInput>
-    <TodoList v-bind:propsdata="todoItems" @removeTodo="removeTodo"></TodoList>
+    <TodoList v-bind:propsdata="todoItems" @removeTodo="removeTodo" @editTodo="editTodo"></TodoList>
     <TodoFooter v-on:removeAll="clearAll"></TodoFooter>
   </div>
 </template>
@@ -26,8 +26,13 @@ export default {
     },
 		addTodo(todoItem) {
 			localStorage.setItem(todoItem, todoItem);
-			this.todoItems.push(todoItem);
+      this.todoItems.push(todoItem);
 		},
+    editTodo(oldTodoItem, newTodoItem, index) {
+      localStorage.removeItem(oldTodoItem);
+      localStorage.setItem(newTodoItem, newTodoItem);
+      this.todoItems.splice(index, 1, newTodoItem);
+    },
     removeTodo(todoItem, index) {
       localStorage.removeItem(todoItem);
       this.todoItems.splice(index, 1);
@@ -36,7 +41,9 @@ export default {
   created() {
 		if (localStorage.length > 0) {
 			for (var i = 0; i < localStorage.length; i++) {
-				this.todoItems.push(localStorage.key(i));
+        if (localStorage.key(i)!=="loglevel:webpack-dev-server") {
+          this.todoItems.push(localStorage.key(i));
+        }
 			}
 		}
   },

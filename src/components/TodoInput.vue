@@ -4,25 +4,14 @@
     <span class="addContainer" v-on:click="addTodo">
       <i class="addBtn fas fa-plus" aria-hidden="true"></i>
     </span>
-    <!-- modal -->
-    <modal v-if="showModal" @close="showModal = false">
-      <h3 slot="header">caution</h3>
-      <span slot="footer" @click="showModal = false">
-        todo item을 입력하세요.
-        <i class="closeModalBtn fas fa-times" aria-hidden="true"></i>
-      </span>
-    </modal>
   </div>
 </template>
 
 <script>
-import Modal from './common/Modal.vue';
-
 export default {
   data() {
     return {
       newTodoItem: '',
-      showModal: false
     }
   },
   methods: {
@@ -34,19 +23,15 @@ export default {
       //exception handling
       if (this.newTodoItem !== "") {
         let addedValue = this.newTodoItem && this.newTodoItem.trim();
-        //localStorage.setItem(addedValue, addedValue);
         this.$emit('addTodo', addedValue);
         this.clearInput();
       } else {
-        this.showModal = !this.showModal;//text 미입력 시 모달 동작
+        this.clearInput();
       }
     },
     clearInput() {
       this.newTodoItem = '';
     }
-  },
-  components: {
-    Modal : Modal
   }
 }
 </script>
@@ -74,6 +59,6 @@ export default {
   }
   .addBtn {
     color: white;
-    vertical-align: middle;
+    vertical-align: middle;;
   }
 </style>
